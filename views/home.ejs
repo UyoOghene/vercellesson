@@ -7,6 +7,10 @@
 </head>
 <body>
     <h1>home</h1>
-    
+    <% for(let post of posts){ %>
+       <h3><%= post.title %></h3> 
+        <img src="<%= post.url %>" alt="">
+        <p> <%= post.caption  %></p>
+        <% } %>
 </body>
 </html>
