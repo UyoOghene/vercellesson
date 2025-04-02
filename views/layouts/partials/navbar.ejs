@@ -1,0 +1,96 @@
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    #navlogo{
+        width: 50px;
+        height: auto;
+    }
+    .navbar {
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        /* backdrop-filter: blur(10px); */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        z-index: 1000;
+    }
+    .navbar h1 {
+        color: #be225186;
+        margin: 0;
+    }
+    .nav-links {
+        display: flex;
+        gap: 20px;
+    }
+    .nav-links a {
+    color: #be225186;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    .nav-links a:hover {
+        color: lightgray;
+    }
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+    color: #be225186;
+        font-size: 24px;
+        cursor: pointer;
+    }
+    .mobile-menu {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        text-align: center;
+        padding: 20px 0;
+    }
+    .mobile-menu a {
+        display: block;
+    color: #be225186;
+        text-decoration: none;
+        margin: 10px 0;
+    }
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+        .menu-toggle {
+            display: block;
+        }
+    }
+</style>
+<nav class="navbar">
+        <img id="navlogo" src="/images/glamboxlogo.png" alt="">
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Products</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+        <button class="menu-toggle">☰</button>
+    </nav>
+    <div class="mobile-menu">
+        <a href="#">Home</a>
+        <a href="#">Products</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </div>
+    <script>
+        const menuToggle = document.querySelector(".menu-toggle");
+        const mobileMenu = document.querySelector(".mobile-menu");
+        
+        menuToggle.addEventListener("click", () => {
+            mobileMenu.style.display = mobileMenu.style.display === "block" ? "none" : "block";
+        });
+    </script>
