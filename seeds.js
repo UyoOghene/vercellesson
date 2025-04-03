@@ -30,22 +30,21 @@ const seedDB = async () => {
   await Post.insertMany([
     {
       title: "Sunset Over the Ocean",
-      image: "./images/pika.jpeg",
+      image: "/images/pika.jpeg",  // ✅ Changed from `./images/` to `/images/`
       caption: "A beautiful view of the ocean at sunset.",
     },
     {
       title: "Mountain Adventure",
-      image: "./images/noheart.png",
+      image: "/images/noheart.png",  // ✅ Fixed path
       caption: "A thrilling hike through the mountains.",
     },
     {
       title: "City Lights",
-      image: "./images/photostarlogo.png",
+      image: "/images/photostarlogo.png",  // ✅ Fixed path
       caption: "A night view of the city illuminated by lights.",
     },
   ]);
   console.log("Database seeded with 3 posts!");
   mongoose.connection.close();
 };
-
 seedDB();
