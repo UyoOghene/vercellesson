@@ -1,13 +1,18 @@
 <% layout('layouts/boilerplate') -%>
-    <h1>Home</h1>
-    
-    <% if (posts.length > 0) { %>
-        <% for(let post of posts) { %>
-            <h3><%= post.title %></h3> 
-            <img src="<%= post.image.replace('./', '/') %>" alt="Image" width="200">
-            <p><%= post.caption %></p>
-        <% } %>
-    <% } else { %>
-        <p>No posts found.</p>
-    <% } %>
 
+    <div class="home-container">
+        
+        <% if (posts.length > 0) { %>
+            <% for(let post of posts) { %>
+                <div class="post-container">
+                    <h3><%= post.title %></h3>
+                    <img src="<%= post.image %>" alt="Post Image" class="post-image">
+                    <p><%= post.caption %></p>
+                </div>
+            <% } %>
+        <% } else { %>
+            <div class="post-container">
+                <p>No posts found.</p>
+            </div>
+        <% } %>
+    </div>
