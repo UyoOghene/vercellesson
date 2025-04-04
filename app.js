@@ -39,6 +39,13 @@ app.get('/', async(req, res) => {
   res.render('home',{posts});
 });
 
+app.get('/posts/:id',async(req,res)=>{
+  const post = await Post.findById(req.params.id);
+  post.save();
+  console.log(post.image)
+  res.render('posts/show',{post})
+})
+
 
 
 app.listen(port, () => {

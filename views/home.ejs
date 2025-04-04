@@ -5,9 +5,10 @@
         <% if (posts.length > 0) { %>
             <% for(let post of posts) { %>
                 <div class="post-container">
-                    <h3><%= post.title %></h3>
+                    <a class="text" href="/posts/<%= post._id %>"> <%= post.title %></a>
+                    
                     <img src="<%= post.image %>" alt="Post Image" class="post-image">
-                    <p><%= post.caption %></p>
+                    <p class="text" >  <%= post.caption %></p>
                 </div>
             <% } %>
         <% } else { %>

@@ -2,11 +2,11 @@ body {
     width: 100%;
     max-width: 100%;
     position: relative;
-    /* width: 100vw; */
     height: auto;
     margin: 0;
     padding: 0;
-    background: linear-gradient(45deg, #c6b1c9 30%, #bd59d6 50%, #4d2369 70%);
+    background: linear-gradient(45deg, #383638 30%, #2d2030 50%, #100e11 70%);
+    /* background: linear-gradient(45deg, #c6b1c9 30%, #bd59d6 50%, #5e3779 70%); */
     /* background: radial-gradient(circle, #DD45DA, rgb(114, 28, 103)); */
     font-family: 'Arial', sans-serif;
     display: flex;
@@ -15,7 +15,9 @@ body {
     flex-direction: column;
 
 }
-
+.text{
+    color: #ffffffc9
+}
 #navlogo{
     width: 60px;
     
@@ -27,7 +29,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(77, 76, 76, 0.5);
     /* backdrop-filter: blur(10px); */
     display: flex;
     justify-content: space-between;
@@ -35,18 +37,19 @@ body {
     z-index: 1000;
 }
 .navbar h1 {
-    color: #be225186;
+    color: #e283b7f5;
     margin: 0;
 }
 .nav-links {
     display: flex;
     gap: 15px;
-margin-right: 40px;
+    margin-right: 40px;
 }
+
 .nav-links a {
-color: #be225186;
+    color: #d871aa86;
     text-decoration: none;
-    transition: color 0.3s;
+    transition: color 0.4s;
 }
 .nav-links a:hover {
     color: lightgray;
@@ -96,26 +99,76 @@ color: #be225186;
     padding: 10px;
     box-sizing: border-box; /* Includes padding in width calculation */
 }
-
 .post-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(238, 222, 222, 0.041);
     border-radius: 50px;
     padding: 20px;
     margin: 10px 0;
     width: 100%;
     box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.1),
-    inset 0 0 10px rgba(255, 255, 255, 0.2); /* Inner glow */
-    backdrop-filter: blur(2px); 
-    transition: box-shadow 0.3s ease;
+        0 4px 20px rgba(224, 222, 222, 0.1),
+        inset 0 0 10px rgba(226, 215, 215, 0.2);
+    backdrop-filter: blur(2px);
+    
+    /* Combined transition for multiple properties */
+    transition: 
+        background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 .post-container:hover {
-    box-shadow: 0 8px 25px rgba(112, 52, 94, 0.15); /* Lifted shadow on hover */
+    background-color: rgba(0, 0, 0, 0.8); /* Fixed alpha value (0-1) */
+    box-shadow: 
+        0 8px 25px rgba(214, 169, 201, 0.3),
+        inset 0 0 15px rgba(226, 215, 215, 0.4);
+    
+    /* Optional: scale effect on hover */
+    transform: scale(1.01);
+    transition: 
+        background-color 0.3s ease-out,
+        box-shadow 0.3s ease-out,
+        transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+#showcontainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: rgba(128, 122, 122, 0.041);
+    border-radius: 50px;
+    padding: 20px;
+    margin: 10px 0;
+    width: 50%;
+    box-shadow: 
+        0 4px 20px rgba(224, 222, 222, 0.1),
+        inset 0 0 10px rgba(226, 215, 215, 0.2);
+        transition: 
+        background-color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#showcontainer:hover {
+    background-color: rgba(43, 42, 42, 0.8); /* Fixed alpha value (0-1) */
+    box-shadow: 
+        0 8px 25px rgba(214, 169, 201, 0.3),
+        inset 0 0 15px rgba(226, 215, 215, 0.4);
+    
+    /* Optional: scale effect on hover */
+    transform: scale(1.01);
+    transition: 
+        background-color 0.3s ease-out,
+        box-shadow 0.3s ease-out,
+        transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+  
+
+
 
 .glam-logo {
     width: 20px;
@@ -129,4 +182,16 @@ color: #be225186;
     height: auto;
     border-radius: 20px;
     margin: 10px 0;
+}
+
+#footer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: rgba(117, 121, 121, 0.5);
+    position: sticky;
+    
+
 }
