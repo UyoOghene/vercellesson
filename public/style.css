@@ -5,6 +5,7 @@ body {
     height: auto;
     margin: 0;
     padding: 0;
+    color: white;
     background: linear-gradient(45deg, #383638 30%, #2d2030 50%, #100e11 70%);
     /* background: linear-gradient(45deg, #c6b1c9 30%, #bd59d6 50%, #5e3779 70%); */
     /* background: radial-gradient(circle, #DD45DA, rgb(114, 28, 103)); */
@@ -182,7 +183,9 @@ color: #be225186;
 
   }
 
-
+.icon{
+    width: 50px;
+}
 
 .glam-logo {
     width: 20px;

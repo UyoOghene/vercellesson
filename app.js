@@ -44,9 +44,7 @@ app.get("/posts/new", (req, res)=>{
 
 app.post('/', async(req, res) => {
   try {
-    console.log('Received data:', req.body); // Keep this for debugging
-    
-    // Correct destructuring from req.body.post
+    console.log('Received data:', req.body);
     const { caption, image, title } = req.body.post;
 
     const newpost = new Post({
@@ -57,20 +55,42 @@ app.post('/', async(req, res) => {
 
     const savedPost = await newpost.save();
     console.log('Saved post:', savedPost);
-    res.redirect('/');
+    res.redirect(`/posts/${savedPost._id}`); // Changed from post._id to savedPost._id
   } catch (e) {
     console.error('Error saving post:', e);
     res.redirect('/posts/new');
   }
 });
+
+app.get('/posts/:id/edit', (async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  if (!post) {
+    console.log('post not found')
+      return res.redirect('/posts');
+  }
+  res.render('posts/edit', { post });
+}));
+
+app.put('/posts/:id', async (req, res) => {
+  const { id } = req.params;
+  const { caption, image, title } = req.body.post;
+
+  // ✅ Correct way: Update existing post
+  const updatedPost = await Post.findByIdAndUpdate(
+    id,
+    { caption, image, title },
+    { new: true } // Returns the updated document
+  );
+
+  res.redirect(`/posts/${updatedPost._id}`); // ✅ Fixed redirect path
+});
+
 app.get('/posts/:id',async(req,res)=>{
   const post = await Post.findById(req.params.id);
   post.save();
   console.log(post.image)
   res.render('posts/show',{post})
 })
-
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);

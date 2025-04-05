@@ -7,6 +7,13 @@
 <img src="<%= post.image.startsWith('/') ? post.image : '/' + post.image %>"><p class="text" ><%= post.caption %></p>
 
 
+<div id="editndel">
+    <span>Edit<a href="/posts/<%= post._id %>/edit">  <img id="editimg" class="icon" src="/images/edit2.png" alt=""> </a></span>
+    <!-- <span><form action="/posts/<%= post._id %>?_method=DELETE" method="post">
+        <button id="delbtnbtn" > <img id="delbtn" src="/images/delete.png" alt=""> Delete </button>
+    </form></span> -->
+</div>
+
     <a class="text" href="/">Back to all posts</a>
 
 </div>
