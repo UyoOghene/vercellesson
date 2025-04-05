@@ -92,6 +92,12 @@ app.get('/posts/:id',async(req,res)=>{
   res.render('posts/show',{post})
 })
 
+
+app.delete("/posts/:id", async (req, res) => {
+  await Post.findByIdAndDelete(req.params.id);
+  res.redirect("/");  // Redirect to home page after deletion
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
