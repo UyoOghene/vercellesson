@@ -38,7 +38,31 @@ app.get('/', async(req, res) => {
   const posts = await Post.find({}); 
   res.render('home',{posts});
 });
+app.get("/posts/new", (req, res)=>{
+  res.render('posts/new')
+})
 
+app.post('/', async(req, res) => {
+  try {
+    console.log('Received data:', req.body); // Keep this for debugging
+    
+    // Correct destructuring from req.body.post
+    const { caption, image, title } = req.body.post;
+
+    const newpost = new Post({
+      caption: caption.trim(),
+      title: title.trim(),
+      image: image.trim()
+    });
+
+    const savedPost = await newpost.save();
+    console.log('Saved post:', savedPost);
+    res.redirect('/');
+  } catch (e) {
+    console.error('Error saving post:', e);
+    res.redirect('/posts/new');
+  }
+});
 app.get('/posts/:id',async(req,res)=>{
   const post = await Post.findById(req.params.id);
   post.save();
