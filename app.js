@@ -75,14 +75,14 @@ app.put('/posts/:id', async (req, res) => {
   const { id } = req.params;
   const { caption, image, title } = req.body.post;
 
-  // ✅ Correct way: Update existing post
+
   const updatedPost = await Post.findByIdAndUpdate(
     id,
     { caption, image, title },
-    { new: true } // Returns the updated document
+    { new: true }
   );
 
-  res.redirect(`/posts/${updatedPost._id}`); // ✅ Fixed redirect path
+  res.redirect(`/posts/${updatedPost._id}`);
 });
 
 app.get('/posts/:id',async(req,res)=>{
@@ -95,7 +95,7 @@ app.get('/posts/:id',async(req,res)=>{
 
 app.delete("/posts/:id", async (req, res) => {
   await Post.findByIdAndDelete(req.params.id);
-  res.redirect("/");  // Redirect to home page after deletion
+  res.redirect("/"); 
 });
 
 app.listen(port, () => {
