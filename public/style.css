@@ -36,7 +36,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: 0.3s ease
 }
+
+#addnew:hover{
+    display: flex;
+    transform: scale(1.5) ;
+}
+
+
 #navlogo{
     width: 60px;
     
@@ -71,6 +79,20 @@ body {
 }
 .nav-links a:hover {
     color: lightgray;
+}
+
+#editndel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 15px;
+}
+#post-title:hover{
+color: #d871aa;
+font-size: 1.2em;
+border-bottom: none;
+transition: 0.3s ease;
 }
 
 #logo-img{
@@ -198,13 +220,20 @@ color: #be225186;
 
   }
   #delbtnbtn{
-    width: 30px;
+    width: 25px;
     background: none;
     border: none;
   }
 
 .icon{
-    width: 40px;
+    width: 30px;
+    transition: 0.3s ease;
+
+}
+.icon:hover{
+    width: 30px;
+    transform: scale(1.5);
+
 }
 
 .glam-logo {
@@ -232,7 +261,6 @@ color: #be225186;
     
 
 }
-
 
 
 
@@ -347,6 +375,41 @@ color: #be225186;
     gap: 0.5rem;
     box-shadow: 0 5px 15px rgba(221, 69, 218, 0.4);
 }
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.glow-button.create-btn {
+    background: linear-gradient(45deg, #4CAF50, #2E7D32);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
+.glow-button.create-btn:hover {
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
+}
+
+.glow-button.cancel-btn {
+    background: linear-gradient(45deg, #6c757d, #495057);
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+}
+
+.glow-button.cancel-btn:hover {
+    box-shadow: 0 8px 25px rgba(108, 117, 125, 0.6);
+}
+
+.glow-button.confirm-cancel-btn {
+    background: linear-gradient(45deg, #ff4d4d, #cc3300);
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.glow-button.continue-btn {
+    background: linear-gradient(45deg, #2196F3, #0D47A1);
+}
+
 
 .glow-button:hover {
     transform: translateY(-3px);
@@ -409,6 +472,7 @@ color: #be225186;
 .back-link:hover i {
     transform: scale(1.2);
 }
+
 
 @media (max-width: 768px) {
     .nav-links {
