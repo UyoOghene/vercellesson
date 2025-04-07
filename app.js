@@ -10,6 +10,7 @@ const path = require('path');
 const Post = require("./models/post");
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
+const {postSchema}= require('./schemas')
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError')
 
@@ -34,7 +35,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const validatePost = (req,res, next) =>{
+  const {error} = postSchema.validate(req.body);
+  if(error){
+    const msg = error.details.map(el => el.message).join(',')
+    throw new ExpressError(msg, 400)
+  }else{
+    next();
+  }
 
+}
 // Home Route
 app.get('/', async(req, res) => {
   const posts = await Post.find({}); 
@@ -46,7 +56,7 @@ app.get("/posts/new", (req, res)=>{
 })
 
 app.post('/', catchAsync(async(req, res) => {
-    if(!req.body.post) throw new ExpressError('Invalid Post data', 400)
+  const { caption, title, image } = req.body.post; 
       const newpost = new Post({
       caption: caption.trim(),
       title: title.trim(),
@@ -68,7 +78,7 @@ app.get('/posts/:id/edit', catchAsync((async (req, res) => {
   res.render('posts/edit', { post });
 })));
 
-app.put('/posts/:id', catchAsync(async (req, res) => {
+app.put('/posts/:id',validatePost, catchAsync(async (req, res) => {
   const { id } = req.params;
   const { caption, image, title } = req.body.post;
 
@@ -94,6 +104,7 @@ app.delete("/posts/:id", async (req, res) => {
   await Post.findByIdAndDelete(req.params.id);
   res.redirect("/"); 
 });
+
 app.all('*', (req,res, next) => {
   next(new ExpressError('page not found', 404))
 })
