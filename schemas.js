@@ -9,3 +9,8 @@
   })
   // const result = postSchema.validate(req.body);
 
+  module.exports.commentSchema = Joi.object({
+    comment: Joi.object({
+      body: Joi.string().required().max(500)
+    }).required()
+  });

@@ -14,6 +14,28 @@
     </form></span>
 </div>
 
+<form action="/posts/<%= post._id %>/comments" method="post" >
+    <div class="mb-3">
+        <label for="body" class="form-label">Add a Comment</label>
+        <textarea  name="comment[body]" id="body" cols="10" rows="3" required></textarea>
+        <div class="valid-feedback">Looks Good</div>
+    </div>
+    <button class="btn btn-success">Submit comment</button>
+    <% if (post.comments && post.comments.length > 0) { %>
+        <div class="comments-section">
+          <h3>Comments</h3>
+          <% post.comments.forEach(comment => { %>
+            <div class="comment">
+              <p><%= comment.body %></p>
+              <small><%= comment.createdAt.toLocaleDateString() %></small>
+            </div>
+          <% }); %>
+        </div>
+      <% } %>
+</form>
+
+
+
     <a class="text" href="/">Back to all posts</a>
 
 </div>

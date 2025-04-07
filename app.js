@@ -11,8 +11,10 @@ const Post = require("./models/post");
 const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override');
 const {postSchema}= require('./schemas')
+const {commentSchema} = require('./schemas')
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError')
+const Comment = require('./models/comment')
 
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/Glam-box';
 
@@ -45,6 +47,16 @@ const validatePost = (req,res, next) =>{
   }
 
 }
+
+const validateComment = (req, res, next) => {
+  const { error } = commentSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map(el => el.message).join(',');
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
 // Home Route
 app.get('/', async(req, res) => {
   const posts = await Post.find({}); 
@@ -92,18 +104,31 @@ app.put('/posts/:id',validatePost, catchAsync(async (req, res) => {
   res.redirect(`/posts/${updatedPost._id}`);
 }));
 
-app.get('/posts/:id',catchAsync(async(req,res)=>{
-  const post = await Post.findById(req.params.id);
-  post.save();
-  console.log(post.image)
-  res.render('posts/show',{post})
-}))
-
+app.get('/posts/:id', catchAsync(async(req, res) => {
+  const post = await Post.findById(req.params.id).populate('comments');
+  if (!post) {
+    throw new ExpressError('Post not found', 404);
+  }
+  res.render('posts/show', { post });
+}));
 
 app.delete("/posts/:id", async (req, res) => {
   await Post.findByIdAndDelete(req.params.id);
   res.redirect("/"); 
 });
+
+// Add a comment to a post
+app.post('/posts/:id/comments', validateComment, catchAsync(async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  if (!post) {
+    throw new ExpressError('Post not found', 404);
+  }
+  const comment = new Comment(req.body.comment);
+  post.comments.push(comment);
+  await comment.save();
+  await post.save();
+  res.redirect(`/posts/${post._id}`);
+}));
 
 app.all('*', (req,res, next) => {
   next(new ExpressError('page not found', 404))
