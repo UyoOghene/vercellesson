@@ -130,6 +130,13 @@ app.post('/posts/:id/comments', validateComment, catchAsync(async (req, res) => 
   res.redirect(`/posts/${post._id}`);
 }));
 
+app.delete('/posts/:id/comments/:commentId', catchAsync(async (req, res) => {
+  const { id, commentId } = req.params;
+  await Post.findByIdAndUpdate(id, { $pull: { comments: commentId } });
+  await Comment.findByIdAndDelete(commentId);
+  res.redirect(`/posts/${id}`);
+}));
+
 app.all('*', (req,res, next) => {
   next(new ExpressError('page not found', 404))
 })
