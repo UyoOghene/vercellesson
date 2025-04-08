@@ -15,6 +15,8 @@ const {commentSchema} = require('./schemas')
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError')
 const Comment = require('./models/comment')
+const posts = require('./routes/posts');
+const comments = require('./routes/comments') 
 
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/Glam-box';
 
@@ -37,17 +39,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const validatePost = (req,res, next) =>{
-  const {error} = postSchema.validate(req.body);
-  if(error){
-    const msg = error.details.map(el => el.message).join(',')
-    throw new ExpressError(msg, 400)
-  }else{
-    next();
-  }
-
-}
-
 const validateComment = (req, res, next) => {
   const { error } = commentSchema.validate(req.body);
   if (error) {
@@ -57,6 +48,8 @@ const validateComment = (req, res, next) => {
     next();
   }
 };
+
+app.use('/posts', posts);
 // Home Route
 app.get('/', async(req, res) => {
   const posts = await Post.find({}); 
@@ -80,42 +73,6 @@ app.post('/', catchAsync(async(req, res) => {
     res.redirect(`/posts/${savedPost._id}`);
   
 }));
-
-app.get('/posts/:id/edit', catchAsync((async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  if (!post) {
-    console.log('post not found')
-      return res.redirect('/posts');
-  }
-  res.render('posts/edit', { post });
-})));
-
-app.put('/posts/:id',validatePost, catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const { caption, image, title } = req.body.post;
-
-
-  const updatedPost = await Post.findByIdAndUpdate(
-    id,
-    { caption, image, title },
-    { new: true }
-  );
-
-  res.redirect(`/posts/${updatedPost._id}`);
-}));
-
-app.get('/posts/:id', catchAsync(async(req, res) => {
-  const post = await Post.findById(req.params.id).populate('comments');
-  if (!post) {
-    throw new ExpressError('Post not found', 404);
-  }
-  res.render('posts/show', { post });
-}));
-
-app.delete("/posts/:id", async (req, res) => {
-  await Post.findByIdAndDelete(req.params.id);
-  res.redirect("/"); 
-});
 
 // Add a comment to a post
 app.post('/posts/:id/comments', validateComment, catchAsync(async (req, res) => {
