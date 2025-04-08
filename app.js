@@ -13,10 +13,18 @@ const methodOverride = require('method-override');
 const {postSchema}= require('./schemas')
 const {commentSchema} = require('./schemas')
 const catchAsync = require('./utilities/catchAsync');
-const ExpressError = require('./utilities/ExpressError')
+const ExpressError = require('./utilities/ExpressError');
+const session = require("express-session");
 const Comment = require('./models/comment')
-const posts = require('./routes/posts');
-const comments = require('./routes/comments') 
+const User = require('./models/user');
+const postsRoutes = require('./routes/posts');
+const usersRoutes = require('./routes/users')
+const commentsRoutes = require('./routes/comments');
+const flash = require('connect-flash');
+const passport = require("passport");
+const LocalStrategy = require('passport-local');
+
+
 
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/Glam-box';
 
@@ -39,21 +47,59 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const sessionConfig = {
+  secret: 'thisshouldbeabettersecret!',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7
+}
 
-app.use('/posts', posts);
-app.use('/posts/:id/comments', comments)
+};
+
+app.use(session(sessionConfig));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+});
+
+app.use('/posts', postsRoutes);
+app.use('/', usersRoutes);
+app.use('/posts/:id/comments', commentsRoutes);
+
+const validatePost = (req,res, next) =>{
+  const {error} = postSchema.validate(req.body);
+  if(error){
+    const msg = error.details.map(el => el.message).join(',')
+    throw new ExpressError(msg, 400)
+  }else{
+    next();
+  }
+
+}
+
+
 // Home Route
 app.get('/', async(req, res) => {
   const posts = await Post.find({}); 
   res.render('home',{posts});
 });
 
-app.get("/posts/new", (req, res)=>{
-  res.render('posts/new')
-})
 
-app.post('/', catchAsync(async(req, res) => {
+app.post('/', validatePost,catchAsync(async(req, res) => {
   const { caption, title, image } = req.body.post; 
+    req.flash('sucess', 'made a new post')
       const newpost = new Post({
       caption: caption.trim(),
       title: title.trim(),
