@@ -39,17 +39,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const validateComment = (req, res, next) => {
-  const { error } = commentSchema.validate(req.body);
-  if (error) {
-    const msg = error.details.map(el => el.message).join(',');
-    throw new ExpressError(msg, 400);
-  } else {
-    next();
-  }
-};
 
 app.use('/posts', posts);
+app.use('/posts/:id/comments', comments)
 // Home Route
 app.get('/', async(req, res) => {
   const posts = await Post.find({}); 
@@ -75,24 +67,6 @@ app.post('/', catchAsync(async(req, res) => {
 }));
 
 // Add a comment to a post
-app.post('/posts/:id/comments', validateComment, catchAsync(async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  if (!post) {
-    throw new ExpressError('Post not found', 404);
-  }
-  const comment = new Comment(req.body.comment);
-  post.comments.push(comment);
-  await comment.save();
-  await post.save();
-  res.redirect(`/posts/${post._id}`);
-}));
-
-app.delete('/posts/:id/comments/:commentId', catchAsync(async (req, res) => {
-  const { id, commentId } = req.params;
-  await Post.findByIdAndUpdate(id, { $pull: { comments: commentId } });
-  await Comment.findByIdAndDelete(commentId);
-  res.redirect(`/posts/${id}`);
-}));
 
 app.all('*', (req,res, next) => {
   next(new ExpressError('page not found', 404))
