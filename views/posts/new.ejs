@@ -2,7 +2,7 @@
 
 <div class="container">
     <h2 class="form-title">Create New Post</h2>
-    <form class="newcontainer" action="/" method="POST" id="postForm">
+    <form class="newcontainer" action="/posts" method="POST" id="postForm">
         <div class="form-group floating">
             <input type="text" name="post[image]" id="image" required placeholder=" ">
             <label for="image">Image URL</label>
@@ -62,7 +62,7 @@ cancelBtn.addEventListener('click', () => {
     if (formChanged) {
         showCancelModal();
     } else {
-        window.location.href = "/";
+        window.location.href = "/posts";
     }
 });
 

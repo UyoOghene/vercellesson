@@ -17,13 +17,13 @@ const ExpressError = require('./utilities/ExpressError');
 const session = require("express-session");
 const Comment = require('./models/comment')
 const User = require('./models/user');
+
 const postsRoutes = require('./routes/posts');
 const usersRoutes = require('./routes/users')
 const commentsRoutes = require('./routes/comments');
 const flash = require('connect-flash');
 const passport = require("passport");
 const LocalStrategy = require('passport-local');
-
 
 
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/Glam-box';
@@ -60,13 +60,15 @@ const sessionConfig = {
 };
 
 app.use(session(sessionConfig));
-app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+app.use(flash());
+
 
 app.use((req, res, next) => {
   res.locals.success = req.flash('success');
@@ -78,41 +80,11 @@ app.use('/posts', postsRoutes);
 app.use('/', usersRoutes);
 app.use('/posts/:id/comments', commentsRoutes);
 
-const validatePost = (req,res, next) =>{
-  const {error} = postSchema.validate(req.body);
-  if(error){
-    const msg = error.details.map(el => el.message).join(',')
-    throw new ExpressError(msg, 400)
-  }else{
-    next();
-  }
-
-}
 
 
-// Home Route
-app.get('/', async(req, res) => {
-  const posts = await Post.find({}); 
-  res.render('home',{posts});
-});
-
-
-app.post('/', validatePost,catchAsync(async(req, res) => {
-  const { caption, title, image } = req.body.post; 
-    req.flash('sucess', 'made a new post')
-      const newpost = new Post({
-      caption: caption.trim(),
-      title: title.trim(),
-      image: image.trim()
-    });
-
-    const savedPost = await newpost.save();
-    console.log('Saved post:', savedPost);
-    res.redirect(`/posts/${savedPost._id}`);
-  
-}));
-
-// Add a comment to a post
+app.get('/',(req, res)=>{
+  res.render('home')
+})
 
 app.all('*', (req,res, next) => {
   next(new ExpressError('page not found', 404))

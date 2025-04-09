@@ -1,37 +1,54 @@
 const express = require("express");
 const router = express.Router();
 const Post = require("../models/post");
+
 const Comment = require('../models/comment');
 const User = require('../models/user')
 const Joi = require('joi');
+const passport = require("passport");
+const LocalStrategy = require('passport-local');
+
 const session = require('express-session')
 // const { cloudinary } = require('../cloudinary/index'); 
 const catchAsync = require('../utilities/catchAsync');
 const ExpressError = require('../utilities/ExpressError')
 const {postSchema}= require('../schemas')
 const {commentSchema} = require('../schemas')
-
-const validatePost = (req,res, next) =>{
-  const {error} = postSchema.validate(req.body);
-  if(error){
-    const msg = error.details.map(el => el.message).join(',')
-    throw new ExpressError(msg, 400)
-  }else{
-    next();
-  }
-
-}
+const { isLoggedIn, validatePost } = require('../middleware');
 
 
-router.get("/new", (req, res)=>{
+// Home Route
+router.get('/', async(req, res) => {
+  const posts = await Post.find({}); 
+  res.render('posts/posts',{posts});
+});
+
+router.post('/',isLoggedIn, validatePost,catchAsync(async(req, res) => {
+  const { caption, title, image } = req.body.post; 
+    req.flash('sucess', 'made a new post')
+      const newpost = new Post({
+      caption: caption.trim(),
+      title: title.trim(),
+      image: image.trim()
+    });
+
+    const savedPost = await newpost.save();
+    console.log('Saved post:', savedPost);
+    res.redirect(`/posts/${savedPost._id}`);
+  
+}));
+
+
+
+router.get("/new",(req, res)=>{
     res.render('posts/new')
   })
 
-  router.get('/:id/edit', catchAsync((async (req, res) => {
+  router.get('/:id/edit', isLoggedIn,catchAsync((async (req, res) => {
     const post = await Post.findById(req.params.id);
     if (!post) {
       console.log('post not found')
-        return res.redirect('/posts');
+        return res.redirect('posts/posts');
     }
     res.render('posts/edit', { post });
   })));
@@ -60,7 +77,7 @@ router.get("/new", (req, res)=>{
   
   router.delete("/:id", async (req, res) => {
     await Post.findByIdAndDelete(req.params.id);
-    res.redirect("/"); 
+    res.redirect("posts/posts"); 
   });
   
   module.exports = router;

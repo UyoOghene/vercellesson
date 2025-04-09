@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local');
 const passportLocalMongoose = require('passport-local-mongoose');
 
 
