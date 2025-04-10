@@ -48,37 +48,55 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+// for vercel
 
-const store = MongoDBStore.create({
-  mongoUrl: mongoURI,
-  crypto: {
-    secret: secret
-  },
-  touchAfter: 24 * 60 * 60
-});
+// const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 
-store.on("error", function(e) {
-  console.log("SESSION STORE ERROR", e)
-});
+// const store = MongoDBStore.create({
+//   mongoUrl: mongoURI,
+//   crypto: {
+//     secret: secret
+//   },
+//   touchAfter: 24 * 60 * 60
+// });
 
+// store.on("error", function(e) {
+//   console.log("SESSION STORE ERROR", e)
+// });
+
+// const sessionConfig = {
+//   store: store,
+//   name: 'session',
+//   secret: secret,
+//   resave: false,
+//   saveUninitialized: false, 
+//   proxy: true,
+//   cookie: {
+//     httpOnly: true,
+//     secure: true, 
+//     sameSite: 'none', 
+//     domain: process.env.NODE_ENV === 'production' 
+//       ? '.vercellesson.vercel.app' 
+//       : undefined,
+//     maxAge: 1000 * 60 * 60 * 24 * 7
+//   }
+// };
+
+
+
+// for Development(localhost)
 const sessionConfig = {
-  store: store,
-  name: 'session',
-  secret: secret,
+  secret: 'thisshouldbeabettersecret!',
   resave: false,
-  saveUninitialized: false, // Changed from true for security
-  proxy: true, // Required for Vercel
+  saveUninitialized: true,
   cookie: {
     httpOnly: true,
-    secure: true, // Must be true in production
-    sameSite: 'none', // Required for cross-site cookies
-    domain: process.env.NODE_ENV === 'production' 
-      ? '.vercellesson.vercel.app' 
-      : undefined,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7
-  }
+}
+
 };
+
 
 app.use(session(sessionConfig));
 app.use(passport.initialize());
