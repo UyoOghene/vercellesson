@@ -204,6 +204,25 @@ color: #be225186;
         box-shadow 0.3s ease-out,
         transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+#heartimg {
+    transition: transform 0.2s ease;
+    width: 3em;
+    height: auto;
+    border-radius: 40px;
+}
+
+#heartimg:hover {
+    transform: scale(1.5);
+}
+
+#likebtn {
+    background-color: none;
+    border: none;
+    border-radius: 40px;
+
+}
+
   .newcontainer{
     display: flex;
     justify-content: center;

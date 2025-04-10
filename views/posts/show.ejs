@@ -16,6 +16,16 @@
     <img src="<%= post.image.startsWith('/') ? post.image : '/' + post.image %>">
     <p class="text"><%= post.caption %></p>
 
+    <form action="/posts/<%= post._id %>/like" method="POST" class="d-inline">
+        <button  id="likebtn" >
+            <img id="heartimg" 
+            src="<%= post.likes.includes(currentUser && currentUser._id) ? '/images/heart.png' : '/images/emptyheart.jpg' %>" 
+            alt="heart">
+                   </button>
+        <span id="likecount"><%= post.likes.length %> Likes</span>
+    </form>
+
+
     <!-- Edit/Delete buttons (only show if current user is post author) -->
     <% if (currentUser && post.author && currentUser._id.equals(post.author._id)) { %>
         <div id="editndel">

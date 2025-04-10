@@ -86,6 +86,36 @@ router.get('/:id', async (req, res) => {
   }
   res.render('posts/show', { post, currentUser: req.user });
 });
+
+router.post('/:id/like', isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  const post = await Post.findById(id);
+
+  if (!post) {
+      req.flash('error', 'Post not found.');
+      return res.redirect('/posts');
+  }
+
+  const likeIndex = post.likes.indexOf(req.user._id);
+  let liked = false;
+
+  if (likeIndex === -1) {
+      post.likes.push(req.user._id);
+      liked = true;
+  } else {
+      post.likes.splice(likeIndex, 1);
+  }
+
+  await post.save();
+
+  // Send JSON data for AJAX functionality or redirect for traditional form
+  if (req.headers['accept'].includes('application/json')) {
+      return res.json({ likesCount: post.likes.length, liked });
+  }
+
+  res.redirect(`/posts/${id}`);
+});
+
   router.delete("/:id", isLoggedIn, catchAsync(async (req, res) => {
     await Post.findByIdAndDelete(req.params.id);
     req.flash('success', 'Deleted post');

@@ -21,6 +21,12 @@ const postSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User" 
     },
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'  // Assuming you have a User model
+        }
+    ],
     comments: [
         {
             type: mongoose.Schema.Types.ObjectId,
