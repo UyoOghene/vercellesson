@@ -40,7 +40,7 @@ router.post('/',isLoggedIn, validatePost,catchAsync(async(req, res) => {
 
 
 
-router.get("/new",(req, res)=>{
+router.get("/new",isLoggedIn,(req, res)=>{
     res.render('posts/new')
   })
 
