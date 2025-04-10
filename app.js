@@ -25,12 +25,13 @@ const flash = require('connect-flash');
 const passport = require("passport");
 const LocalStrategy = require('passport-local');
 
-
+const MongoDBStore = require('connect-mongo');
 const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/Glam-box';
 
 
 
 mongoose.connect(mongoURI, {
+
   useNewUrlParser: true,
   useUnifiedTopology: true, 
   serverSelectionTimeoutMS: 10000 // Increase timeout
@@ -47,16 +48,33 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
+const store = MongoDBStore.create({
+  mongoUrl: mongoURI,
+  crypto: {
+    secret: secret
+  },
+  touchAfter: 24 * 60 * 60
+});
+
+store.on("error", function(e) {
+  console.log("SESSION STORE ERROR", e)
+});
+
 const sessionConfig = {
-  secret: 'thisshouldbeabettersecret!',
+  store: store, 
+  name: 'session',
+  secret: secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7
-}
-
+  }
 };
 
 app.use(session(sessionConfig));

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Comment = require('./comment')
+const Comment = require('./comment');
 
 const postSchema = new mongoose.Schema({
     title: {
@@ -19,12 +19,7 @@ const postSchema = new mongoose.Schema({
     },
     author: { 
         type: mongoose.Schema.Types.ObjectId,
-         ref: "User" 
-    },
-
-    createdAt: { 
-        type: Date,
-        default: Date.now
+        ref: "User" 
     },
     comments: [
         {
@@ -32,16 +27,15 @@ const postSchema = new mongoose.Schema({
             ref: 'Comment'
         }
     ]
-});
+}, { timestamps: true }); // 👈 This enables automatic createdAt/updatedAt fields
 
-postSchema.post('findOneandDelete', async function (doc){
-    if(doc){
+// Delete associated comments when a post is deleted
+postSchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
         await Comment.deleteMany({
-            _id: {
-                $in: doc.comments
-            }
-        })
+            _id: { $in: doc.comments }
+        });
     }
-})
+});
 
 module.exports = mongoose.model("Post", postSchema);
