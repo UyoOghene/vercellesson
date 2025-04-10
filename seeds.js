@@ -30,18 +30,24 @@ const seedDB = async () => {
   await Post.insertMany([
     {
       title: "Sunset Over the Ocean",
-      image: "/images/pika.jpeg",  // ✅ Changed from `./images/` to `/images/`
+      image: "/images/pika.jpeg",  
       caption: "A beautiful view of the ocean at sunset.",
+      author: "67f4fc618bc8e6507290fc35"
+
     },
     {
       title: "Mountain Adventure",
-      image: "/images/noheart.png",  // ✅ Fixed path
+      image: "/images/noheart.png", 
       caption: "A thrilling hike through the mountains.",
+      author: "67f4fc618bc8e6507290fc35"
+
     },
     {
       title: "City Lights",
-      image: "/images/photostarlogo.png",  // ✅ Fixed path
+      image: "/images/photostarlogo.png",  
       caption: "A night view of the city illuminated by lights.",
+      author: "67f4fc618bc8e6507290fc35"
+
     },
   ]);
   console.log("Database seeded with 3 posts!");

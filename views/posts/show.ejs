@@ -1,45 +1,83 @@
 <% layout('layouts/boilerplate') -%>
 
 <div id="showcontainer">
+    <h1 class="text"><%= post.title %></h1>
+    
+    <!-- Post author info -->
+    <p>Post created by 
+        <% if (post.author) { %>
+            <%= post.author.username %>
+        <% } else { %>
+            [deleted user]
+        <% } %>
+    </p>
+    
+    <!-- Post image and caption -->
+    <img src="<%= post.image.startsWith('/') ? post.image : '/' + post.image %>">
+    <p class="text"><%= post.caption %></p>
 
-<h1 class="text"><%= post.title %></h1>
+    <!-- Edit/Delete buttons (only show if current user is post author) -->
+    <% if (currentUser && post.author && currentUser._id.equals(post.author._id)) { %>
+        <div id="editndel">
+            <span>
+                <a href="/posts/<%= post._id %>/edit">
+                    <img id="editimg" class="icon" src="/images/edit2.png" alt="Edit">
+                </a>
+            </span>
+            <span>
+                <form action="/posts/<%= post._id %>?_method=DELETE" method="post">
+                    <button id="delbtnbtn">
+                        <img id="delbtn" class="icon" src="/images/delete.png" alt="Delete">
+                    </button>
+                </form>
+            </span>
+        </div>
+    <% } %>
 
-<img src="<%= post.image.startsWith('/') ? post.image : '/' + post.image %>"><p class="text" ><%= post.caption %></p>
+    <!-- Comment form (only show if logged in) -->
+    <% if (currentUser) { %>
+        <form action="/posts/<%= post._id %>/comments" method="post">
+            <div class="mb-3">
+                <label for="body" class="form-label">Add a Comment</label>
+                <textarea name="comment[body]" id="body" cols="10" rows="3" required></textarea>
+                <div class="valid-feedback">Looks Good</div>
+            </div>
+            <button class="btn btn-success">Submit comment</button>
+        </form>
+    <% } else { %>
+        <p class="text-muted">You must <a href="/login">log in</a> to comment.</p>
+    <% } %>
 
-
-<div id="editndel">
-    <span><a href="/posts/<%= post._id %>/edit">  <img id="editimg" class="icon" src="/images/edit2.png" alt=""> </a></span>
-    <span><form action="/posts/<%= post._id %>?_method=DELETE" method="post">
-        <button id="delbtnbtn" > <img id="delbtn" class="icon" src="/images/delete.png" alt=""> </button>
-    </form></span>
-</div>
-
-<form action="/posts/<%= post._id %>/comments" method="post" >
-    <div class="mb-3">
-        <label for="body" class="form-label">Add a Comment</label>
-        <textarea  name="comment[body]" id="body" cols="10" rows="3" required></textarea>
-        <div class="valid-feedback">Looks Good</div>
-    </div>
-    <button class="btn btn-success">Submit comment</button>
-    </form>
+    <!-- Comments section -->
     <% if (post.comments && post.comments.length > 0) { %>
         <div class="comments-section">
             <h3>Comments</h3>
+            
             <% post.comments.forEach(comment => { %>
-            <div class="comment">
-                <p><%= comment.body %></p>
-                <small><%= comment.createdAt.toLocaleDateString() %></small>
-                <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="post">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
-            </div>
+                <div class="comment">
+                    <p><%= comment.body %></p>
+                    
+                    <small>
+                        <%= comment.createdAt.toLocaleDateString() %> by 
+                        <% if (comment.author) { %>
+                            <%= comment.author.username || comment.author.email %>
+                        <% } else { %>
+                            [deleted user]
+                        <% } %>
+                    </small>
+                    
+                    <!-- Delete button (only show if current user is comment author) -->
+                    <% if (currentUser && comment.author && currentUser._id.equals(comment.author._id)) { %>
+                        <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    <% } %>
+                </div>
             <% }); %>
         </div>
-        <% } %>
-
-
+    <% } else { %>
+        <p class="text-muted">No comments yet.</p>
+    <% } %>
 
     <a class="text" href="/posts">Back to all posts</a>
-
 </div>
-

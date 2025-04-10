@@ -24,12 +24,13 @@ router.get('/', async(req, res) => {
 });
 
 router.post('/',isLoggedIn, validatePost,catchAsync(async(req, res) => {
-  const { caption, title, image } = req.body.post; 
+  const { caption, title, image, author } = req.body.post; 
     req.flash('sucess', 'made a new post')
       const newpost = new Post({
       caption: caption.trim(),
       title: title.trim(),
-      image: image.trim()
+      image: image.trim(),
+      author: req.user._id
     });
 
     const savedPost = await newpost.save();
@@ -67,17 +68,28 @@ router.get("/new",isLoggedIn,(req, res)=>{
     res.redirect(`/posts/${updatedPost._id}`);
   }));
   
-  router.get('/:id', catchAsync(async(req, res) => {
-    const post = await Post.findById(req.params.id).populate('comments');
-    if (!post) {
-      throw new ExpressError('Post not found', 404);
-    }
-    res.render('posts/show', { post });
-  }));
-  
-  router.delete("/:id", async (req, res) => {
+// Show a single post
+router.get('/:id', async (req, res) => {
+  const post = await Post.findById(req.params.id)
+      .populate('author')
+      .populate({
+          path: 'comments',
+          populate: { 
+              path: 'author',
+              select: 'username email' // Only fetch these fields for security
+          }
+      });
+
+  if (!post) {
+      req.flash('error', 'Post not found!');
+      return res.redirect('/posts');
+  }
+  res.render('posts/show', { post, currentUser: req.user });
+});
+  router.delete("/:id", isLoggedIn, catchAsync(async (req, res) => {
     await Post.findByIdAndDelete(req.params.id);
-    res.redirect("posts/posts"); 
-  });
+    req.flash('success', 'Deleted post');
+    res.redirect("/posts");
+}));
   
   module.exports = router;

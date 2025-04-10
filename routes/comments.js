@@ -9,17 +9,9 @@ const catchAsync = require('../utilities/catchAsync');
 const ExpressError = require('../utilities/ExpressError')
 const {postSchema}= require('../schemas')
 const {commentSchema} = require('../schemas')
+const { isLoggedIn, validatePost } = require('../middleware');
 
-const validatePost = (req,res, next) =>{
-  const {error} = postSchema.validate(req.body);
-  if(error){
-    const msg = error.details.map(el => el.message).join(',')
-    throw new ExpressError(msg, 400)
-  }else{
-    next();
-  }
 
-}
 const validateComment = (req, res, next) => {
     const { error } = commentSchema.validate(req.body);
     if (error) {
@@ -31,23 +23,44 @@ const validateComment = (req, res, next) => {
   };
   
 
-router.post('/', validateComment, catchAsync(async (req, res) => {
-  const post = await Post.findById(req.params.id);
-  if (!post) {
-    throw new ExpressError('Post not found', 404);
-  }
-  const comment = new Comment(req.body.comment);
-  post.comments.push(comment);
-  await comment.save();
-  await post.save();
-  res.redirect(`/posts/${post._id}`);
-}));
+  router.post('/', isLoggedIn, validateComment, catchAsync(async (req, res) => {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+        req.flash('error', 'Post not found');
+        return res.redirect('/posts');
+    }
+    
+    const comment = new Comment(req.body.comment);
+    comment.author = req.user._id;
+    post.comments.push(comment);
+    
+    await comment.save();
+    await post.save();
+    
+    req.flash('success', 'Comment added successfully');
+    res.redirect(`/posts/${post._id}`);
+}));  
 
-router.delete('/:commentId', catchAsync(async (req, res) => {
+router.delete('/:commentId', isLoggedIn, catchAsync(async (req, res) => {
   const { id, commentId } = req.params;
+  
+  // Find the comment first to check ownership
+  const comment = await Comment.findById(commentId);
+  
+  if (!comment) {
+      req.flash('error', 'Comment not found');
+      return res.redirect(`/posts/${id}`);
+  }
+  
+  // Check if current user is the author
+  if (!comment.author.equals(req.user._id)) {
+      req.flash('error', 'You do not have permission to delete this comment');
+      return res.redirect(`/posts/${id}`);
+  }
+  
   await Post.findByIdAndUpdate(id, { $pull: { comments: commentId } });
   await Comment.findByIdAndDelete(commentId);
+  req.flash('success', 'Comment deleted successfully');
   res.redirect(`/posts/${id}`);
 }));
-
 module.exports = router;

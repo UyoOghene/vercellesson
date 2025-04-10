@@ -6,7 +6,21 @@
             <a href="/">Home</a>
             <a href="/posts/new">New post</a>
             <a href="/posts">All posts</a>
-            <a href="#">Contact</a>
+            <div class="user">
+                <% if (currentUser) { %>
+                    <%= currentUser.email %>
+                <% } else { %>
+                   Guest User
+                <% } %>
+            </div>     
+           </div>
+        <div class="nav-links">
+            <% if(!currentUser) { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <% }else {%>
+            <a href="/logout">Logout</a>
+                <% } %>
         </div>
         <button class="menu-toggle">☰</button>
     </nav>
