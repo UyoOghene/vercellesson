@@ -8,14 +8,12 @@
   ],
   "routes": [
     {
-      "src": "/public/(.*)",
-      "dest": "/public/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "app.js",
       "headers": {
-        "Cache-Control": "no-store, must-revalidate"
+        "Cache-Control": "no-store",
+        "Access-Control-Allow-Origin": "https://vercellesson.vercel.app",
+        "Access-Control-Allow-Credentials": "true"
       }
     }
   ]

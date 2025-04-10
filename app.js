@@ -63,16 +63,19 @@ store.on("error", function(e) {
 });
 
 const sessionConfig = {
-  store: store, 
+  store: store,
   name: 'session',
   secret: secret,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // Changed from true for security
+  proxy: true, // Required for Vercel
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    secure: true, // Must be true in production
+    sameSite: 'none', // Required for cross-site cookies
+    domain: process.env.NODE_ENV === 'production' 
+      ? '.vercellesson.vercel.app' 
+      : undefined,
     maxAge: 1000 * 60 * 60 * 24 * 7
   }
 };
