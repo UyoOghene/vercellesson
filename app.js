@@ -48,54 +48,55 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
 // for vercel
 
-// const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+const store = MongoDBStore.create({
+  mongoUrl: mongoURI,
+  crypto: {
+    secret: secret
+  },
+  touchAfter: 24 * 60 * 60
+});
 
-// const store = MongoDBStore.create({
-//   mongoUrl: mongoURI,
-//   crypto: {
-//     secret: secret
-//   },
-//   touchAfter: 24 * 60 * 60
-// });
+store.on("error", function(e) {
+  console.log("SESSION STORE ERROR", e)
+});
 
-// store.on("error", function(e) {
-//   console.log("SESSION STORE ERROR", e)
-// });
-
-// const sessionConfig = {
-//   store: store,
-//   name: 'session',
-//   secret: secret,
-//   resave: false,
-//   saveUninitialized: false, 
-//   proxy: true,
-//   cookie: {
-//     httpOnly: true,
-//     secure: true, 
-//     sameSite: 'none', 
-//     domain: process.env.NODE_ENV === 'production' 
-//       ? '.vercellesson.vercel.app' 
-//       : undefined,
-//     maxAge: 1000 * 60 * 60 * 24 * 7
-//   }
-// };
-
-
-
-// for Development(localhost)
 const sessionConfig = {
-  secret: 'thisshouldbeabettersecret!',
+  store: store,
+  name: 'session',
+  secret: secret,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, 
+  proxy: true,
   cookie: {
     httpOnly: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    secure: true, 
+    sameSite: 'none', 
+    domain: process.env.NODE_ENV === 'production' 
+      ? '.vercellesson.vercel.app' 
+      : undefined,
     maxAge: 1000 * 60 * 60 * 24 * 7
-}
-
+  }
 };
+
+
+
+// // for Development(localhost)
+// const sessionConfig = {
+//   secret: 'thisshouldbeabettersecret!',
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: {
+//     httpOnly: true,
+//     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+//     maxAge: 1000 * 60 * 60 * 24 * 7
+// }
+
+// };
 
 
 app.use(session(sessionConfig));
