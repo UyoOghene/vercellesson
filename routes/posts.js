@@ -19,7 +19,7 @@ const { isLoggedIn, validatePost } = require('../middleware');
 
 // Home Route
 router.get('/', async(req, res) => {
-  const posts = await Post.find({}); 
+  const posts = await Post.find({}).populate('author'); 
   res.render('posts/posts',{posts});
 });
 

@@ -6,7 +6,8 @@
     <!-- Post author info -->
     <p>Post created by 
         <% if (post.author) { %>
-            <%= post.author.username %>
+            <%= post.author.username %> on <%= post.createdAt.toLocaleDateString() %> by 
+
         <% } else { %>
             [deleted user]
         <% } %>
