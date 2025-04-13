@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Post = require("../models/post");
-
+const posts = require('../controllers/posts');
 const Comment = require('../models/comment');
 const User = require('../models/user')
 const Joi = require('joi');
@@ -14,14 +14,11 @@ const catchAsync = require('../utilities/catchAsync');
 const ExpressError = require('../utilities/ExpressError')
 const {postSchema}= require('../schemas')
 const {commentSchema} = require('../schemas')
-const { isLoggedIn, validatePost } = require('../middleware');
+const { isLoggedIn, isAuthor, isCommentAuthor, validatePost, validateComment } = require("../middleware");
 
 
 // Home Route
-router.get('/', async(req, res) => {
-  const posts = await Post.find({}).populate('author'); 
-  res.render('posts/posts',{posts});
-});
+router.get('/', posts.index );
 
 router.post('/',isLoggedIn, validatePost,catchAsync(async(req, res) => {
   const { caption, title, image, author } = req.body.post; 
@@ -76,7 +73,7 @@ router.get('/:id', async (req, res) => {
           path: 'comments',
           populate: { 
               path: 'author',
-              select: 'username email' // Only fetch these fields for security
+              select: 'username email' 
           }
       });
 

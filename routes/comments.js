@@ -9,18 +9,9 @@ const catchAsync = require('../utilities/catchAsync');
 const ExpressError = require('../utilities/ExpressError')
 const {postSchema}= require('../schemas')
 const {commentSchema} = require('../schemas')
-const { isLoggedIn, validatePost } = require('../middleware');
+const { isLoggedIn, isAuthor, isCommentAuthor, validatePost, validateComment } = require("../middleware");
 
 
-const validateComment = (req, res, next) => {
-    const { error } = commentSchema.validate(req.body);
-    if (error) {
-      const msg = error.details.map(el => el.message).join(',');
-      throw new ExpressError(msg, 400);
-    } else {
-      next();
-    }
-  };
   
 
   router.post('/', isLoggedIn, validateComment, catchAsync(async (req, res) => {
