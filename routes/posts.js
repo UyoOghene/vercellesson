@@ -9,7 +9,10 @@ const passport = require("passport");
 const LocalStrategy = require('passport-local');
 
 const session = require('express-session')
-// const { cloudinary } = require('../cloudinary/index'); 
+const { cloudinary } = require('../cloudinary/index'); 
+const multer = require('multer');
+ const { storage } = require('../cloudinary/index');
+ const upload = multer({ storage });
 const catchAsync = require('../utilities/catchAsync');
 const ExpressError = require('../utilities/ExpressError')
 const {postSchema}= require('../schemas')
@@ -20,7 +23,7 @@ const { isLoggedIn, isAuthor, isCommentAuthor, validatePost, validateComment } =
 // Home Route
 router.get('/', posts.index );
 
-router.post('/',isLoggedIn, validatePost,catchAsync(posts.createNew));
+router.post('/',isLoggedIn,upload.array('image') ,validatePost,catchAsync(posts.createNew));
 
 router.get("/new",isLoggedIn, (posts.newform))
 

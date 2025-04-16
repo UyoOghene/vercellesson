@@ -7,11 +7,11 @@ const postSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    image: {
-        type: String,
-        required: true,
-        trim: true
-    },
+    images: [{
+        url: String,
+        filename: String 
+    }],
+
     caption: {
         type: String,
         required: true,

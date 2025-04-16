@@ -4,9 +4,12 @@ const User = require('./models/user')
 const passport = require('passport');
 const { commentSchema, postSchema } = require('./schemas.js');  
 const Joi = require('joi');
-// const multer = require('multer');
-// const { storage } = require('./cloudinary'); 
-// const upload = multer({ storage });
+const multer = require('multer');
+const { storage } = require('./cloudinary/index.js'); 
+const upload = multer({ storage });
+const catchAsync = require('./utilities/catchAsync');
+const ExpressError = require('./utilities/ExpressError')
+
 
 
 module.exports.isLoggedIn = (req, res, next) => {

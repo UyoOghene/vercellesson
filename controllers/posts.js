@@ -1,5 +1,7 @@
 const Post = require('../models/post');
 
+
+
 module.exports.index = async(req, res) => {
   const posts = await Post.find({}).populate('author'); 
   res.render('posts/posts',{posts});
@@ -9,21 +11,25 @@ module.exports.newform = (req, res)=>{
     res.render('posts/new')
   };
 
-module.exports.createNew = (async(req, res) => {
-  const { caption, title, image, author } = req.body.post; 
-    req.flash('sucess', 'made a new post')
-      const newpost = new Post({
-      caption: caption.trim(),
-      title: title.trim(),
-      image: image.trim(),
-      author: req.user._id
+  module.exports.createNew = async (req, res) => {
+    const { caption, title } = req.body.post;
+    
+    if (!req.files || req.files.length === 0) {
+        req.flash('error', 'At least one image is required');
+        return res.redirect('/posts/new');
+    }
+
+    const newPost = new Post({ 
+        caption, 
+        title,
+        author: req.user._id,
+        images: req.files.map(f => ({ url: f.path, filename: f.filename }))
     });
 
-    const savedPost = await newpost.save();
-    console.log('Saved post:', savedPost);
-    res.redirect(`/posts/${savedPost._id}`);
-  
-});
+    await newPost.save();
+    req.flash('success', 'Created a new post!');
+    res.redirect("/posts");
+};
 
 module.exports.editform = (async (req, res) => {
     const post = await Post.findById(req.params.id);

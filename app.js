@@ -18,6 +18,10 @@ const session = require("express-session");
 const Comment = require('./models/comment')
 const User = require('./models/user');
 const { isLoggedIn, isAuthor, isCommentAuthor, validatePost, validateComment } = require("./middleware");
+const { cloudinary } = require('./cloudinary/index'); 
+const multer = require('multer');
+ const { storage } = require('./cloudinary/index');
+
 
 
 const postsRoutes = require('./routes/posts');
