@@ -19,6 +19,8 @@ const Comment = require('./models/comment')
 const User = require('./models/user');
 const { isLoggedIn, isAuthor, isCommentAuthor, validatePost, validateComment } = require("./middleware");
 const { cloudinary } = require('./cloudinary/index'); 
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
 const multer = require('multer');
  const { storage } = require('./cloudinary/index');
 

@@ -9,7 +9,9 @@ const passport = require("passport");
 const LocalStrategy = require('passport-local');
 
 const session = require('express-session')
-const { cloudinary } = require('../cloudinary/index'); 
+const { cloudinary } = require('../cloudinary/index');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
 const multer = require('multer');
  const { storage } = require('../cloudinary/index');
  const upload = multer({ storage });

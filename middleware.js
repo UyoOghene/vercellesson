@@ -9,6 +9,7 @@ const { storage } = require('./cloudinary/index.js');
 const upload = multer({ storage });
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError')
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 
 
