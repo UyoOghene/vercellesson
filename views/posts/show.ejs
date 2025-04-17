@@ -1,76 +1,72 @@
 <% layout('layouts/boilerplate') -%>
 
 <div id="showcontainer">
-    <h1 class="text"><%= post.title %></h1>
+    <div class="post-header">
+        <h1><%= post.title %></h1>
+        <div class="post-meta">
+            <span>Posted by <span class="author"><%= post.author ? post.author.username : '[deleted user]' %></span></span>
+            <span>•</span>
+            <span><%= post.createdAt.toLocaleDateString() %></span>
+        </div>
+    </div>
     
-    <!-- Post author info -->
-    <p>Post created by 
-        <% if (post.author) { %>
-            <%= post.author.username %> on <%= post.createdAt.toLocaleDateString() %> by 
-
-        <% } else { %>
-            [deleted user]
-        <% } %>
-    </p>
-    
-    <!-- Post image and caption -->
+    <!-- Image Carousel -->
     <div class="carousel">
-        <div class="carousel-inner">
+        <div class="carousel-inner" id="carousel-inner">
             <% post.images.forEach((img, i) => { %>
                 <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
-                    <img id="postimg" src="<%= img.url %>" alt="Post Image">
-                   
+                    <img src="<%= img.url %>" alt="Post Image" class="post-image">
                 </div>
             <% }) %>
         </div>
-
-    
+        
         <% if (post.images.length > 1) { %>
             <button class="carousel-control prev" onclick="moveSlide(-1)">&#10094;</button>
             <button class="carousel-control next" onclick="moveSlide(1)">&#10095;</button>
         <% } %>
     </div>
-     
 
-    <form action="/posts/<%= post._id %>/like" method="POST" class="d-inline">
-        <button  id="likebtn" >
-            <img id="heartimg" 
-            src="<%= post.likes.includes(currentUser && currentUser._id) ? '/images/heart.png' : '/images/emptyheart.jpg' %>" 
-            alt="heart">
-                   </button>
-        <span id="likecount"><%= post.likes.length %> Likes</span>
-    </form>
+    <!-- Like Section -->
+    <div class="like-section">
+        <form action="/posts/<%= post._id %>/like" method="POST" class="d-inline">
+            <button id="likebtn">
+                <img id="heartimg" 
+                     src="<%= post.likes.includes(currentUser && currentUser._id) ? '/images/heart.png' : '/images/emptyheart.jpg' %>" 
+                     alt="Like">
+            </button>
+            <span id="likecount"><%= post.likes.length %> Likes</span>
+        </form>
+    </div>
 
-
-    <!-- Edit/Delete buttons (only show if current user is post author) -->
+    <!-- Edit/Delete Buttons -->
     <% if (currentUser && post.author && currentUser._id.equals(post.author._id)) { %>
         <div id="editndel">
             <a href="/posts/<%= post._id %>/edit" class="edit-btn">
-                <img id="editimg" src="/images/edit2.png" alt="Edit">
+                <img src="/images/edit2.png" alt="Edit">
             </a>
             <form action="/posts/<%= post._id %>?_method=DELETE" method="post">
                 <button type="submit" class="delete-btn">
-                    <img id="delbtn" src="/images/delete.png" alt="Delete">
+                    <img src="/images/delete.png" alt="Delete">
                 </button>
             </form>
         </div>
     <% } %>
 
-    <!-- Comment form -->
+    <!-- Comment Form -->
     <% if (currentUser) { %>
         <form class="comment-form" action="/posts/<%= post._id %>/comments" method="post">
             <label for="body">Add a Comment</label>
-            <textarea name="comment[body]" id="body" required></textarea>
+            <textarea name="comment[body]" id="body" placeholder="Share your thoughts..." required></textarea>
             <button type="submit">Post Comment</button>
         </form>
     <% } else { %>
         <p class="login-prompt">You must <a href="/login">log in</a> to comment.</p>
     <% } %>
 
-    <!-- Comments section -->
+    <!-- Comments Section -->
     <% if (post.comments && post.comments.length > 0) { %>
         <div class="comments-section">
-            <h3>Comments</h3>
+            <h3>Comments (<%= post.comments.length %>)</h3>
             
             <% post.comments.forEach(comment => { %>
                 <div class="comment">
@@ -87,16 +83,47 @@
                     <% if (currentUser && comment.author && currentUser._id.equals(comment.author._id)) { %>
                         <form action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="post">
                             <button type="submit" class="delete-comment-btn">
-                                <i class="fas fa-trash-alt"></i> Delete
+                                Delete Comment
                             </button>
                         </form>
                     <% } %>
                 </div>
-            <% }); %>
+            <% }) %>
         </div>
     <% } else { %>
-        <p class="login-prompt">No comments yet.</p>
+        <p class="login-prompt">No comments yet. Be the first to comment!</p>
     <% } %>
 
-    <a class="text" href="/posts">Back to all posts</a>
+    <a href="/posts" class="back-link">← Back to all posts</a>
 </div>
+
+<script>
+    // Carousel functionality
+    let currentSlide = 0;
+    const carousel = document.getElementById('carousel-inner');
+    const slides = document.querySelectorAll('.carousel-item');
+    const totalSlides = slides.length;
+
+    function moveSlide(direction) {
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+     if (post.images.length > 1) {
+        setInterval(() => {
+            moveSlide(1);
+        }, 5000);
+     }
+    
+
+    const likeBtn = document.getElementById('likebtn');
+    if (likeBtn) {
+        likeBtn.addEventListener('click', function() {
+            const heartImg = document.getElementById('heartimg');
+            heartImg.style.transform = 'scale(1.3)';
+            setTimeout(() => {
+                heartImg.style.transform = 'scale(1)';
+            }, 300);
+        });
+    }
+</script>

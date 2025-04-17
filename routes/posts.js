@@ -13,8 +13,8 @@ const { cloudinary } = require('../cloudinary/index');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 const multer = require('multer');
- const { storage } = require('../cloudinary/index');
- const upload = multer({ storage });
+const { storage } = require('../cloudinary/index');
+const upload = multer({ storage });
 const catchAsync = require('../utilities/catchAsync');
 const ExpressError = require('../utilities/ExpressError')
 const {postSchema}= require('../schemas')
@@ -31,13 +31,12 @@ router.get("/new",isLoggedIn, (posts.newform))
 
 router.get('/:id/edit', isLoggedIn,catchAsync(posts.editform));
   
-  router.put('/:id',validatePost, catchAsync(posts.updatedpost));
-  
-// Show a single post
+router.put('/:id', isLoggedIn, upload.array('image'), validatePost, catchAsync(posts.updatedpost));
+
 router.get('/:id', posts.showpost);
 
 router.post('/:id/like', isLoggedIn,(posts.likepost));
 
-  router.delete("/:id", isLoggedIn, catchAsync(posts.deletepost));
+router.delete("/:id", isLoggedIn, catchAsync(posts.deletepost));
   
-  module.exports = router;
+module.exports = router;

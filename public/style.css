@@ -207,6 +207,292 @@ body {
     transition: all 0.4s ease;
 }
 
+.post-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.post-header h1 {
+    color: #ffd6f0;
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.post-meta {
+    color: #d0a8d0;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.post-meta .author {
+    font-weight: 600;
+    color: #e283b7;
+}
+
+/* Carousel Styles */
+.carousel {
+    position: relative;
+    width: 100%;
+    max-height: 600px;
+    margin: 2rem 0;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-item {
+    min-width: 100%;
+    position: relative;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 500px;
+    object-fit: contain;
+    background: #000;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    padding: 1rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.carousel-control:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-control.prev {
+    left: 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.carousel-control.next {
+    right: 0;
+    border-radius: 5px 0 0 5px;
+}
+
+/* Like Button Styles */
+.like-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    justify-content: center;
+}
+
+#likebtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s ease;
+}
+
+#heartimg {
+    width: 36px;
+    height: 36px;
+    transition: all 0.3s ease;
+}
+
+#heartimg:hover {
+    transform: scale(1.2);
+}
+
+#likecount {
+    color: #ffb3e6;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+/* Edit/Delete Buttons */
+#editndel {
+    display: flex;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    justify-content: center;
+}
+
+.edit-btn, .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.3s ease;
+}
+
+.edit-btn img, .delete-btn img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+}
+
+.edit-btn:hover img {
+    transform: scale(1.1) rotate(10deg);
+}
+
+.delete-btn:hover img {
+    transform: scale(1.1);
+}
+
+/* Comment Form */
+.comment-form {
+    width: 100%;
+    margin: 2.5rem 0;
+}
+
+.comment-form label {
+    display: block;
+    color: #d0a8d0;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 159, 215, 0.2);
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    line-height: 1.5;
+    min-height: 120px;
+    resize: vertical;
+    transition: all 0.3s ease;
+}
+
+.comment-form textarea:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #dd45da;
+    box-shadow: 0 0 0 2px rgba(221, 69, 218, 0.2);
+}
+
+.comment-form button {
+    background: linear-gradient(45deg, #e283b7, #dd45da);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.comment-form button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(221, 69, 218, 0.4);
+}
+
+/* Comments Section */
+.comments-section {
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.comments-section h3 {
+    color: #ffb3e6;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 179, 230, 0.3);
+}
+
+.comment {
+    background: rgba(60, 50, 70, 0.4);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.comment:hover {
+    background: rgba(80, 65, 95, 0.5);
+    transform: translateX(5px);
+}
+
+.comment p {
+    color: #f0e6ff;
+    margin: 0 0 1rem 0;
+    line-height: 1.6;
+    font-size: 1.05rem;
+}
+
+.comment small {
+    color: #c792ea;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.delete-comment-btn {
+    background: rgba(255, 99, 132, 0.15);
+    color: #ff9fd7;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-comment-btn:hover {
+    background: rgba(255, 99, 132, 0.3);
+}
+
+.login-prompt {
+    color: #d0a8d0;
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.login-prompt a {
+    color: #ff9fd7;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.login-prompt a:hover {
+    color: #ffb3e6;
+    text-decoration: underline;
+}
+
+/* Back Link */
+.back-link {
+    display: inline-block;
+    margin-top: 2rem;
+    color: #c792ea;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.back-link:hover {
+    color: #ff9fd7;
+    transform: translateX(-5px);
+}
+
 /* ===== FORM STYLES ===== */
 .newcontainer {
     width: 50%;
@@ -232,8 +518,20 @@ body {
     }
     
     #showcontainer {
-        width: 90%;
+        width: 95%;
         padding: 1.5rem;
+    }
+
+    .carousel-item img {
+        height: 350px;
+    }
+
+    .post-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .comment-form textarea {
+        min-height: 100px;
     }
     
     .newcontainer {

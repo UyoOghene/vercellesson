@@ -40,20 +40,53 @@ module.exports.editform = (async (req, res) => {
     res.render('posts/edit', { post });
   });
 
-module.exports.updatedpost = async (req, res) => {
+  module.exports.updatedpost = async (req, res) => {
     const { id } = req.params;
-    const { caption, image, title } = req.body.post;
-  
-    const updatedPost = await Post.findByIdAndUpdate(
-      id,
-      { caption, image, title },
-      { new: true }
-    );
-  
-    res.redirect(`/posts/${updatedPost._id}`);
-  } 
+    const { caption, title } = req.body.post;
+    
+    try {
+        const post = await Post.findById(id);
+        
+        if (!post) {
+            req.flash('error', 'Post not found');
+            return res.redirect('/posts');
+        }
 
-  module.exports.showpost =  async (req, res) => {
+        // Update basic fields
+        post.title = title;
+        post.caption = caption;
+
+        // Handle new image uploads
+        if (req.files && req.files.length > 0) {
+            const newImages = req.files.map(f => ({ 
+                url: f.path, 
+                filename: f.filename 
+            }));
+            post.images.push(...newImages);
+        }
+
+        // Handle image deletions (now guaranteed to be an array)
+        if (req.body.deleteImages && req.body.deleteImages.length > 0) {
+            // Delete from Cloudinary
+            for (let filename of req.body.deleteImages) {
+                await cloudinary.uploader.destroy(filename);
+            }
+            // Remove from post.images array
+            post.images = post.images.filter(
+                img => !req.body.deleteImages.includes(img.filename)
+            );
+        }
+
+        await post.save();
+        req.flash('success', 'Successfully updated post!');
+        res.redirect(`/posts/${post._id}`);
+    } catch (e) {
+        req.flash('error', 'Failed to update post');
+        res.redirect(`/posts/${id}/edit`);
+    }
+}
+
+module.exports.showpost =  async (req, res) => {
     const post = await Post.findById(req.params.id)
         .populate('author')
         .populate({

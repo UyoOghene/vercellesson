@@ -9,7 +9,6 @@ const { storage } = require('./cloudinary/index.js');
 const upload = multer({ storage });
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError')
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 
 
@@ -29,7 +28,23 @@ module.exports.storeReturnTo = (req, res, next) => {
     next();
 };
 
+// module.exports.validatePost = (req, res, next) => {
+//     const { error } = postSchema.validate(req.body);
+//     if (error) {
+//         const msg = error.details.map(el => el.message).join(',');
+//         throw new ExpressError(msg, 400);
+//     } else {
+//         next();
+//     }
+// };
+
 module.exports.validatePost = (req, res, next) => {
+    if (!req.body.deleteImages) {
+        req.body.deleteImages = [];
+    } else if (!Array.isArray(req.body.deleteImages)) {
+        req.body.deleteImages = [req.body.deleteImages];
+    }
+    
     const { error } = postSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
@@ -38,7 +53,6 @@ module.exports.validatePost = (req, res, next) => {
         next();
     }
 };
-
 module.exports.validateComment = (req, res, next) => {
     const { error } = commentSchema.validate(req.body);
     if (error) {

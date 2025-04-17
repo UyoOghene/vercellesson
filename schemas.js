@@ -5,9 +5,8 @@ const postSchema = Joi.object({
     post: Joi.object({
         title: Joi.string().required(),
         caption: Joi.string().required(),
-        // image: Joi.array().items(Joi.string().uri()).required(), // Array for multiple image URLs
     }).required(),
-    deleteImages: Joi.array()
+    deleteImages: Joi.array().items(Joi.string()).default([])
 });
 
 module.exports = { postSchema };
