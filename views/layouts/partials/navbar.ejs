@@ -26,9 +26,16 @@
     </nav>
     <div class="mobile-menu">
         <a href="#">Home</a>
-        <a href="#">Products</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <a href="#">New post</a>
+        <a href="#">All posts</a>
+        <div class="nav-links">
+            <% if(!currentUser) { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <% }else {%>
+            <a href="/logout">Logout</a>
+                <% } %>
+        </div>
     </div>
     <script>
         const menuToggle = document.querySelector(".menu-toggle");

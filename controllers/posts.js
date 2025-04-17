@@ -1,4 +1,12 @@
 const Post = require('../models/post');
+const { cloudinary } = require('../cloudinary/index');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+const multer = require('multer');
+const { storage } = require('../cloudinary/index');
+const upload = multer({ storage });
+const catchAsync = require('../utilities/catchAsync');
+const ExpressError = require('../utilities/ExpressError')
 
 
 
@@ -43,20 +51,19 @@ module.exports.editform = (async (req, res) => {
   module.exports.updatedpost = async (req, res) => {
     const { id } = req.params;
     const { caption, title } = req.body.post;
-    
+
     try {
         const post = await Post.findById(id);
-        
+
         if (!post) {
             req.flash('error', 'Post not found');
             return res.redirect('/posts');
         }
 
-        // Update basic fields
         post.title = title;
         post.caption = caption;
 
-        // Handle new image uploads
+        // Add new images
         if (req.files && req.files.length > 0) {
             const newImages = req.files.map(f => ({ 
                 url: f.path, 
@@ -65,26 +72,29 @@ module.exports.editform = (async (req, res) => {
             post.images.push(...newImages);
         }
 
-        // Handle image deletions (now guaranteed to be an array)
-        if (req.body.deleteImages && req.body.deleteImages.length > 0) {
-            // Delete from Cloudinary
-            for (let filename of req.body.deleteImages) {
+        // Normalize deleteImages to an array
+        let imagesToDelete = req.body.deleteImages || [];
+        if (!Array.isArray(imagesToDelete)) {
+            imagesToDelete = [imagesToDelete];
+        }
+
+        // Delete images from Cloudinary and from MongoDB
+        if (imagesToDelete.length > 0) {
+            for (let filename of imagesToDelete) {
                 await cloudinary.uploader.destroy(filename);
             }
-            // Remove from post.images array
-            post.images = post.images.filter(
-                img => !req.body.deleteImages.includes(img.filename)
-            );
+            post.images = post.images.filter(img => !imagesToDelete.includes(img.filename));
         }
 
         await post.save();
         req.flash('success', 'Successfully updated post!');
         res.redirect(`/posts/${post._id}`);
     } catch (e) {
+        console.error(e);
         req.flash('error', 'Failed to update post');
         res.redirect(`/posts/${id}/edit`);
     }
-}
+};
 
 module.exports.showpost =  async (req, res) => {
     const post = await Post.findById(req.params.id)

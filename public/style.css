@@ -386,6 +386,10 @@ body {
     box-shadow: 0 0 0 2px rgba(221, 69, 218, 0.2);
 }
 
+.thumbnail{
+    width: 6em;
+}
+
 .comment-form button {
     background: linear-gradient(45deg, #e283b7, #dd45da);
     color: white;
