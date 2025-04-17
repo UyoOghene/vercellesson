@@ -509,6 +509,164 @@ body {
                 inset 0 5px 15px rgba(255, 255, 255, 0.1);
 }
 
+/* ===== EDIT PAGE STYLES ===== */
+.edit-container {
+    width: 60%;
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background: rgba(40, 36, 52, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 0 15px rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.edit-container h1 {
+    color: #ffd6f0;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: #d0a8d0;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 159, 215, 0.2);
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.12);
+    border-color: #dd45da;
+    box-shadow: 0 0 0 2px rgba(221, 69, 218, 0.2);
+}
+
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.current-images {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(60, 50, 70, 0.4);
+    border-radius: 15px;
+}
+
+.current-images h3 {
+    color: #ffb3e6;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.image-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.image-container label {
+    color: #d0a8d0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.image-container input[type="checkbox"] {
+    accent-color: #dd45da;
+}
+
+.thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+
+}
+  
+  .thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(221, 69, 218, 0.3);
+    cursor: pointer;
+  }
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px dashed rgba(255, 159, 215, 0.3);
+    border-radius: 10px;
+    color: white;
+}
+
+.form-group small {
+    display: block;
+    color: #c792ea;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.submit-btn {
+    background: linear-gradient(45deg, #e283b7, #dd45da);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(221, 69, 218, 0.4);
+}
+
+.cancel-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: #c792ea;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.cancel-link:hover {
+    color: #ff9fd7;
+    text-decoration: underline;
+}
+
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 @media (max-width: 768px) {
     .home-container {
@@ -552,5 +710,15 @@ body {
     
     #addnewbtn {
         width: 25px;
+    }
+
+    .edit-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .image-container {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
