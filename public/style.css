@@ -41,7 +41,7 @@ body {
     left: 0;
     width: 100%;
     padding: 0rem 0rem;
-    background: rgba(40, 36, 52, 0.9);
+    background: rgba(45, 39, 61, 0.6);
     backdrop-filter: blur(10px);
     display: flex;
     justify-content: space-between;
@@ -127,14 +127,15 @@ body {
     flex-direction: column;
     gap: 1rem;
     padding: 1.5rem;
-    background: rgba(40, 36, 52, 0.95);
-    width: 100%;
+    background: rgba(45, 39, 61, 0.6);
+    width: 30%;
     position: absolute;
-    top: 100%;
-    left: 0;
+    /* top: 100%; */
+    right: 0;
     z-index: 999;
     border-bottom: 1px solid rgba(255, 159, 215, 0.2);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 .mobile-menu a {

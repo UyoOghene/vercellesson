@@ -25,9 +25,9 @@
         <button class="menu-toggle">☰</button>
     </nav>
     <div class="mobile-menu">
-        <a href="#">Home</a>
-        <a href="#">New post</a>
-        <a href="#">All posts</a>
+        <a href="/">Home</a>
+            <a href="/posts/new">New post</a>
+            <a href="/posts">All posts</a>
         <div class="nav-links">
             <% if(!currentUser) { %>
             <a href="/login">Login</a>
@@ -42,6 +42,6 @@
         const mobileMenu = document.querySelector(".mobile-menu");
         
         menuToggle.addEventListener("click", () => {
-            mobileMenu.style.display = mobileMenu.style.display === "block" ? "none" : "block";
+            mobileMenu.style.display = mobileMenu.style.display === "flex" ? "none" : "flex";
         });
     </script>
