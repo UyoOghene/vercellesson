@@ -14,7 +14,7 @@
                 <% } %>
             </div>     
            </div>
-        <div class="nav-links">
+        <div class="nav-links" id="nav-linkdiv" >
             <% if(!currentUser) { %>
             <a href="/login">Login</a>
             <a href="/register">Register</a>
@@ -25,10 +25,18 @@
         <button class="menu-toggle">☰</button>
     </nav>
     <div class="mobile-menu">
-        <a href="/">Home</a>
-            <a href="/posts/new">New post</a>
+            <a href="/">Home</a>
+            <a href="/posts/new">Create post</a>
             <a href="/posts">All posts</a>
-        <div class="nav-links">
+            <div class="user">
+                <% if (currentUser) { %>
+                    <%= currentUser.email %>
+                <% } else { %>
+                   Guest User
+                <% } %>
+            </div>     
+
+        <div class="nav-links mobile">
             <% if(!currentUser) { %>
             <a href="/login">Login</a>
             <a href="/register">Register</a>

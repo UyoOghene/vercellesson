@@ -11,8 +11,10 @@
                     </p>
                     
                     <% if (post.images && post.images.length > 0) { %>
+                        <a href="/posts/<%= post._id %>">
                         <img src="<%= post.images[0].url %>" alt="Post Image" class="post-image">
                     <% } %>
+                     </a>
                     <p class="text" >  <%= post.caption %></p>
                 </div>
             <% } %>

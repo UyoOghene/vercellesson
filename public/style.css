@@ -50,6 +50,9 @@ body {
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(255, 159, 215, 0.1);
 }
+#nav-linkdiv{
+    margin-right: 2em;
+}
 
 #navlogo {
     height: 50px;
@@ -64,10 +67,13 @@ body {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.2rem;
 }
 
 .nav-links a {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     color: #d0a8d0;
     text-decoration: none;
     font-weight: 500;
@@ -95,8 +101,20 @@ body {
 .nav-links a:hover::after {
     width: 100%;
 }
+.topdiv{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0;
+    padding-bottom: 0;
+
+}
 
 .user {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     color: #e283b7;
     font-weight: 600;
     font-size: 0.9rem;
@@ -126,6 +144,7 @@ body {
     display: none;
     flex-direction: column;
     gap: 1rem;
+    margin-top: 10px ;
     padding: 1.5rem;
     background: rgba(45, 39, 61, 0.6);
     width: 30%;
@@ -142,6 +161,7 @@ body {
     color: #d0a8d0;
     text-decoration: none;
     padding: 0.8rem;
+    border-bottom: 1px solid rgba(255, 159, 215, 0.2);
     transition: all 0.3s ease;
     border-radius: 5px;
 }
@@ -154,6 +174,12 @@ body {
 #logo-img{
     width: 3em;
 }
+
+.keywords{
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
 footer{
     height: 2em;
     width: 100%;
@@ -780,6 +806,22 @@ footer{
     .nav-links {
         display: none;
     }
+    .mobile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .keywords{
+        margin-bottom: 0;
+        padding-bottom: 0;
+        font-size: 1em;
+    }
+    #keywords{
+        margin-bottom: 0;
+        padding-bottom: 0;
+        font-size: 0.6em;
+    }
     
     .menu-toggle {
         display: block;
@@ -787,6 +829,9 @@ footer{
     
     .mobile-menu.active {
         display: flex;
+    }
+    .mobile-menu{
+        top: 5%;
     }
     
     .home-container {

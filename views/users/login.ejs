@@ -7,7 +7,8 @@
     align-items: center;
     min-height: 80vh;
     background: none;
-    padding: 2rem;
+    padding: 0.5rem;
+    width: 80vw;
   }
 
   .glass-login-form {
@@ -18,7 +19,7 @@
 
     width: 100%;
     max-width: 420px;
-    padding: 2.5rem;
+    padding: 1rem;
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -99,12 +100,37 @@
   /* Responsive adjustments */
   @media (max-width: 768px) {
     .glass-login-form {
-      padding: 1.5rem;
-      max-width: 90%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-top:  0;
+      width: 90%;
+      margin-top: 0em;
+      margin-bottom: 1rem;
+      text-align: center;
     }
-    
+    .validated-form{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 90%;
+      margin: 0;
+      
+    }
     .glass-login-form h1 {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .form-group{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 0;
+      margin: 0;
       margin-bottom: 1.5rem;
     }
   }
