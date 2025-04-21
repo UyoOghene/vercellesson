@@ -11,6 +11,39 @@
     width: 80vw;
   }
 
+  .links  {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    align-items: center;
+    color: #d0a8d0;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0;
+    margin-bottom: 2em;
+    position: relative;
+}
+
+.links:hover {
+    color: #ff9fd7;
+    border-bottom: 1px solid #ffd6f0;
+}
+
+.links::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #e283b7, #dd45da);
+    transition: width 0.3s ease;
+}
+
+
   .glass-login-form {
     display: flex;
     justify-content: center;
@@ -137,6 +170,8 @@
 </style>
 
 <div class="login-wrapper">
+  <a class="links" href="/register">Sign Up if you don't have an account!</a>
+
   <div class="glass-login-form">
     <h1>Sign In</h1>
     <form action="/login" method="POST" class="validated-form" novalidate>

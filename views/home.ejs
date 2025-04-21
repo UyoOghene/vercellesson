@@ -1,3 +1,10 @@
-<% layout('layouts/boilerplate') -%>
+<!-- <% layout('layouts/boilerplate') -%> -->
 
-<h1>Home</h1>
+<div class="nav-links" id="nav-link-home">
+    <% if(!currentUser) { %>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+    <% }else {%>
+    <a href="/logout">Logout</a>
+        <% } %>
+</div>
