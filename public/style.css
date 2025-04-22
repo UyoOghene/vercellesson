@@ -13,6 +13,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 
@@ -369,7 +370,7 @@ footer{
     background: rgba(255, 255, 255, 0.08);
     border-radius: 20px ;
     border: none;
-    padding: 2px;
+    padding: 3px;
     width: 90%;
     min-width: 10rem;
     height: 2em;
@@ -405,7 +406,7 @@ footer{
 /* Carousel Styles */
 .carousel {
     position: relative;
-    width: 100%;
+    width: 90%;
     max-height: 600px;
     margin: 2rem 0;
     border-radius: 15px;
@@ -419,6 +420,9 @@ footer{
 }
 
 .carousel-item {
+    align-items: center;
+    justify-content: center;
+    width: 70%;
     min-width: 100%;
     position: relative;
 }
@@ -535,8 +539,8 @@ footer{
 }
 
 .comment-form textarea {
-    width: 100%;
-    padding: 15px;
+    width: 90%;
+    padding: 10px;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 159, 215, 0.2);
     border-radius: 10px;
@@ -988,11 +992,14 @@ footer{
     }
     
     .post-container {
-        padding: 20px;
+        padding: 15px;
+        width: 80%;
+
+        
     }
     
     #showcontainer {
-        width: 90%;
+        width: 80%;
         padding: 1.0rem;
     }
 
@@ -1026,7 +1033,7 @@ footer{
 
     .edit-container {
         width: 90%;
-        padding: 1.5rem;
+        padding: 1rem;
     }
 
     .image-container {
@@ -1045,7 +1052,7 @@ footer{
     }
     
     #showcontainer, .newcontainer, .edit-container {
-        padding: 1.2rem;
+        padding: 1rem;
     }
     
     .post-header h1 {
